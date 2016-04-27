@@ -35,7 +35,15 @@ function ping_pong_form_submit($form, &$form_state) {
     $result = array();
     $goal = $form_state['values']['input'];
     for ($i = 1; $i <= $goal; $i ++ ) {
-        array_push($result, $i);
+        if ($i % 15 === 0) {
+            array_push($result, "ping-pong is fun");
+        } elseif ($i % 5 === 0) {
+            array_push($result, "ping it like its hot");
+        } elseif ($i % 3 === 0) {
+            array_push($result, "pong it like its not");
+        } else {
+            array_push($result, $i);
+        }
     }
 
     $_SESSION['ping_pong_result'] = $result;
