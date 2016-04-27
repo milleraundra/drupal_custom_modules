@@ -1,0 +1,40 @@
+<?php
+
+function ping_pong_menu() {
+    $items = array();
+    $items['ping_pong_input'] = array(
+        'title' => 'Play Ping Pong!',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('ping_pong_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['ping_pong_output'] = array(
+        'title' => 'Ping Pong Results',
+        'page callback' => 'ping_pong_result',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function ping_pong_form() {
+    $form['input'] = array(
+        '#type' => 'number',
+        '#title' => 'Ping-Pong',
+        '#description' => t('Enter a number for us to ping-pong up to!'),
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Here we go!',
+    );
+    return $form;
+}
+
+function ping_pong_form_submit($form, &$form_state) {
+    $form_state['redirect'] = 'ping_pong_output';
+}
+
+function ping_pong_result() {
+    return 'Yay, you are on the way to building ping pong in drupal';
+}

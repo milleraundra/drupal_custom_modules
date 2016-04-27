@@ -1,0 +1,5 @@
+name = Ping Pong
+description = Enter a number a watch it ping pong.
+package = Custom Modules
+core = 7.x
+files[] = ping_pong.module
