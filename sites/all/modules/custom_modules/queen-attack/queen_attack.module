@@ -1,0 +1,48 @@
+<?php
+
+// menu hook
+function queen_attack_menu() {
+    $items['queen_attack_input'] = array(
+        'title' => 'Queen Attack Form',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('queen_attack_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['queen_attack_output'] = array(
+        'title' => 'Queen Attack Results',
+        'page callback' => 'queen_attack_result',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function queen_attack_form() {
+    $form['x1'] = array(
+        '#type' => 'textfield',
+        '#title' => 'x position of queen',
+        '#required' => TRUE,
+    );
+    $form['y1'] = array(
+        '#type' => 'textfield',
+        '#title' => 'y position of queen',
+        '#required' => TRUE,
+    );
+    $form['x2'] = array(
+        '#type' => 'textfield',
+        '#title' => 'x position of victim',
+        '#required' => TRUE,
+    );
+    $form['y2'] = array(
+        '#type' => 'textfield',
+        '#title' => 'y position of victim',
+        '#required' => TRUE,
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Here we go!',
+    );
+
+    return $form;
+}
