@@ -46,3 +46,23 @@ function queen_attack_form() {
 
     return $form;
 }
+
+function queen_attack_form_submit($form, &$form_state) {
+    $x1 = $form_state['values']['x1'];
+    $y1 = $form_state['values']['y1'];
+    $x2 = $form_state['values']['x2'];
+    $y2 = $form_state['values']['y2'];
+
+    $pieces_are_diagonal = ( abs( $x1 - $x2 ) === abs( $y1 - $y2 ) );
+
+    if( $x1 === $x2 || $y1 === $y2 || $pieces_are_diagonal) {
+        $_SESSION['queen_attack'] = "Your victim is in striking range! You may attack.";
+    } else {
+        $_SESSION['queen_attack'] = "You cannot attack.";
+    }
+    $form_state['redirect'] = 'queen_attack_output';
+}
+
+function queen_attack_result() {
+    return $_SESSION['queen_attack'];
+}
