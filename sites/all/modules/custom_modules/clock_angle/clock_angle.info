@@ -1,0 +1,5 @@
+name = Clock Angle
+description = Calculate the smaller angle between the hour and minutes hands of a clock
+package = Custom Modules
+core = 7.x
+files[] = clock_angle.module
