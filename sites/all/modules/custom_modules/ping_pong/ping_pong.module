@@ -20,7 +20,7 @@ function ping_pong_menu() {
 
 function ping_pong_form() {
     $form['input'] = array(
-        '#type' => 'number',
+        '#type' => 'textfield',
         '#title' => 'Ping-Pong',
         '#description' => t('Enter a number for us to ping-pong up to!'),
     );
@@ -32,9 +32,24 @@ function ping_pong_form() {
 }
 
 function ping_pong_form_submit($form, &$form_state) {
+    $result = array();
+    $goal = $form_state['values']['input'];
+    for ($i = 1; $i <= $goal; $i ++ ) {
+        array_push($result, $i);
+    }
+
+    $_SESSION['ping_pong_result'] = $result;
     $form_state['redirect'] = 'ping_pong_output';
 }
 
 function ping_pong_result() {
-    return 'Yay, you are on the way to building ping pong in drupal';
+    $output = "<ul>";
+    $result = $_SESSION['ping_pong_result'];
+    foreach($result as $number) {
+        $output .= '<li>' . $number . '</li>';
+    }
+    $output .= '</ul>';
+
+
+    return $output;
 }
