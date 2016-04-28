@@ -51,13 +51,23 @@ function triangle_tracker_form() {
 }
 
 function triangle_tracker_form_submit($form, &$form_state) {
+    $one = $form_state['values']['side1'];
+    $two = $form_state['values']['side2'];
+    $three = $form_state['values']['side3'];
+    if ( $one === $two && $two === $three ) {
+        $_SESSION['result'] = "Your triangle is equilateral!";
+    } elseif ( $one === $two || $two === $three || $three === $one ) {
+        $_SESSION['result'] = "Your triangle is isosceles!";
+    } else {
+        $_SESSION['result'] = "Your triangle is scalene!";
+    }
     $form_state['redirect'] = 'triangle_output';
 }
 
 //callback functions
 
 function triangle_tracker_result() {
-    return "Hello, World!";
+    return $_SESSION['result'];
 }
 
 //validation functions
