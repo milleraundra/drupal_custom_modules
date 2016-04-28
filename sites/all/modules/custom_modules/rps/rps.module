@@ -1,0 +1,80 @@
+<?php
+
+function rps_menu() {
+    $items['rps_player1'] = array(
+        'title' => "Rock Paper Scissors",
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('player1_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['rps_player2'] = array(
+        'title' => "Rock Paper Scissors",
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('player2_form'),
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    $items['rps_output'] = array(
+        'title' => "Rock Paper Scissors",
+        'page callback' => 'rps_results',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function player1_form() {
+    $form['player1'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Player One'),
+    );
+    $form['player1']['player1_throw'] = array(
+        '#type' => 'textfield',
+        '#title' => 'Enter Rock, Paper, or Scissors',
+        '#required' => TRUE,
+        '#element_validate' => array(),
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Throw!',
+        '#validate' => array(),
+    );
+    return $form;
+}
+function player2_form() {
+    $form['player2'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Player Two'),
+    );
+    $form['player2']['player2_throw'] = array(
+        '#type' => 'textfield',
+        '#title' => 'Enter Rock, Paper, or Scissors',
+        '#required' => TRUE,
+        '#element_validate' => array(),
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Throw!',
+        '#validate' => array(),
+    );
+    return $form;
+}
+
+function player1_form_submit($form, &$form_state) {
+    $_SESSION['player1_throw'] = $form_state['values']['player1_throw'];
+    $form_state['redirect'] = 'rps_player2';
+}
+
+function player2_form_submit($form, &$form_state) {
+    $_SESSION['player2_throw'] = $form_state['values']['player2_throw'];
+    $form_state['redirect'] = 'rps_output';
+}
+
+function rps_results() {
+    //compare session variables
+    //return string of winner?
+    var_dump($_SESSION['player1_throw']);
+    var_dump($_SESSION['player2_throw']);
+    return "Hello, World!";
+}
