@@ -70,11 +70,36 @@ function player2_form_submit($form, &$form_state) {
 }
 
 function rps_results() {
-    //compare session variables
-    //return string of winner?
-    var_dump($_SESSION['player1_throw']);
-    var_dump($_SESSION['player2_throw']);
-    return "Hello, World!";
+    $player1_throw = $_SESSION['player1_throw'];
+    $player2_throw = $_SESSION['player2_throw'];
+
+    if ($player1_throw === $player2_throw) {
+        return "Its a tie!";
+    }
+
+    if ($player1_throw === 'Rock') {
+        if ($player2_throw === 'Scissors') {
+            return "Player 1 Wins";
+        } else {
+            return "Player 2 Wins";
+        }
+    }
+    if ($player1_throw === 'Paper') {
+        if ($player2_throw === 'Rock') {
+            return "Player 1 Wins";
+        } else {
+            return "Player 2 Wins";
+        }
+    }
+    if ($player1_throw === 'Scissors') {
+        if ($player2_throw === 'Paper') {
+            return "Player 1 Wins";
+        } else {
+            return "Player 2 Wins";
+        }
+    }
+
+    return "What the what???";
 }
 
 function element_validate_rps($element) {
