@@ -19,25 +19,33 @@ function queen_attack_menu() {
 }
 
 function queen_attack_form() {
-    $form['x1'] = array(
+    $form['first_piece'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('First Piece'),
+    );
+    $form['first_piece']['x1'] = array(
         '#type' => 'textfield',
         '#title' => 'x position of queen',
         '#required' => TRUE,
         '#element_validate' => array('element_validate_integer_positive', 'element_validate_range'),
     );
-    $form['y1'] = array(
+    $form['first_piece']['y1'] = array(
         '#type' => 'textfield',
         '#title' => 'y position of queen',
         '#required' => TRUE,
         '#element_validate' => array('element_validate_integer_positive', 'element_validate_range'),
     );
-    $form['x2'] = array(
+    $form['second_piece'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Second Piece'),
+    );
+    $form['second_piece']['x2'] = array(
         '#type' => 'textfield',
         '#title' => 'x position of victim',
         '#required' => TRUE,
         '#element_validate' => array('element_validate_integer_positive', 'element_validate_range'),
     );
-    $form['y2'] = array(
+    $form['second_piece']['y2'] = array(
         '#type' => 'textfield',
         '#title' => 'y position of victim',
         '#required' => TRUE,
@@ -46,6 +54,7 @@ function queen_attack_form() {
     $form['submit'] = array(
         '#type' => 'submit',
         '#value' => 'Here we go!',
+        '#validate' => array('queen_attack_form_validate'),
     );
 
     return $form;
@@ -54,6 +63,14 @@ function queen_attack_form() {
 function element_validate_range($element) {
   if ( $element['#value'] > 8 ) {
     form_error($element, t('One of your pieces is not on the board! Please please an spot between 1 and 8.'));
+  }
+}
+
+function queen_attack_form_validate($form, &$form_state) {
+  $x_values_equal = ( $form_state['values']['x1'] === $form_state['values']['x2']) ;
+  $y_values_equal = ( $form_state['values']['y1'] === $form_state['values']['y2']) ;
+  if ( $x_values_equal && $y_values_equal ) {
+    form_set_error('second_piece', "Your two pieces cannot occupy the same space.");
   }
 }
 
