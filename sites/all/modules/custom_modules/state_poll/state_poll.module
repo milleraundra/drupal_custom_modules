@@ -98,32 +98,38 @@ function state_poll_form() {
 // form functions
 
 function state_poll_form_submit($form, &$form_state) {
+    $_SESSION['ice_cream'] = $form_state['values']['ice_cream'];
     $form_state['redirect'] = 'state_poll_output';
 }
 
 function element_validate_state($element) {
     global $us_states;
     $input_state = $element['#value'];
-    if ( strlen($input_state) >=3 ) {
+    $_SESSION['state'] = "";
+
+    if ( strlen($input_state) > 2 ) {
 
         $input_state = strtolower($input_state);
         $input_state = ucwords($input_state);
         foreach($us_states as $initial => $state_name) {
             if ($state_name === $input_state) {
                 $_SESSION['state'] = $state_name;
-            } else {
-                form_error($element, t('That is not a real state.'));
             }
+        }
+
+        if ($_SESSION['state'] === "") {
+            form_error($element, t('That is not a real state.'));
         }
 
     } else {
         $input_state = strtoupper($input_state);
         foreach($us_states as $initial => $state_name) {
             if ($initial === $input_state) {
-                $_SESSION['state'] = $initial;
-            } else {
-                form_error($element, t('That is not a real state.'));
+                $_SESSION['state'] = $state_name;
             }
+        }
+        if ($_SESSION['state'] === "") {
+            form_error($element, t('That is not a real state.'));
         }
     }
 }
@@ -131,5 +137,5 @@ function element_validate_state($element) {
 // callback functions
 
 function state_poll_result() {
-    return $_SESSION['state'];
+    return "Thank you for taking our poll! We have you down for " . $_SESSION['ice_cream'] . " ice cream in " . $_SESSION['state'];
 }
