@@ -1,0 +1,5 @@
+name = State Poll
+description = Enter a ice cream type and state
+package = Custom Modules
+core = 7.x
+files[] = state_poll.modules

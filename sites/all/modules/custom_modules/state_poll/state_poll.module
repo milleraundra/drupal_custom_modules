@@ -1,0 +1,135 @@
+<?php
+
+global $us_states;
+$us_states = array(
+    'AL'=>'Alabama',
+    'AK'=>'Alaska',
+    'AZ'=>'Arizona',
+    'AR'=>'Arkansas',
+    'CA'=>'California',
+    'CO'=>'Colorado',
+    'CT'=>'Connecticut',
+    'DE'=>'Delaware',
+    'DC'=>'District of Columbia',
+    'FL'=>'Florida',
+    'GA'=>'Georgia',
+    'HI'=>'Hawaii',
+    'ID'=>'Idaho',
+    'IL'=>'Illinois',
+    'IN'=>'Indiana',
+    'IA'=>'Iowa',
+    'KS'=>'Kansas',
+    'KY'=>'Kentucky',
+    'LA'=>'Louisiana',
+    'ME'=>'Maine',
+    'MD'=>'Maryland',
+    'MA'=>'Massachusetts',
+    'MI'=>'Michigan',
+    'MN'=>'Minnesota',
+    'MS'=>'Mississippi',
+    'MO'=>'Missouri',
+    'MT'=>'Montana',
+    'NE'=>'Nebraska',
+    'NV'=>'Nevada',
+    'NH'=>'New Hampshire',
+    'NJ'=>'New Jersey',
+    'NM'=>'New Mexico',
+    'NY'=>'New York',
+    'NC'=>'North Carolina',
+    'ND'=>'North Dakota',
+    'OH'=>'Ohio',
+    'OK'=>'Oklahoma',
+    'OR'=>'Oregon',
+    'PA'=>'Pennsylvania',
+    'RI'=>'Rhode Island',
+    'SC'=>'South Carolina',
+    'SD'=>'South Dakota',
+    'TN'=>'Tennessee',
+    'TX'=>'Texas',
+    'UT'=>'Utah',
+    'VT'=>'Vermont',
+    'VA'=>'Virginia',
+    'WA'=>'Washington',
+    'WV'=>'West Virginia',
+    'WI'=>'Wisconsin',
+    'WY'=>'Wyoming',
+);
+
+function state_poll_menu() {
+    $items['state_poll_input'] = array(
+        'title' => 'State Ice Cream Poll',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('state_poll_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['state_poll_output'] = array(
+        'title' => 'Result Tracked',
+        'page callback' => 'state_poll_result',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function state_poll_form() {
+    $form['poll'] = array(
+        '#title' => t('Enter Data'),
+        '#type' => 'fieldset',
+    );
+    $form['poll']['ice_cream'] = array(
+        '#title' => t('Enter an Ice Cream'),
+        '#type' => 'textfield',
+        '#required' => TRUE,
+    );
+    $form['poll']['state'] = array(
+        '#title' => t('Enter Your State'),
+        '#type' => 'textfield',
+        '#required' => TRUE,
+        '#element_validate' => array('element_validate_state'),
+    );
+    $form['submit'] = array(
+        '#value' => t('Submit your vote!'),
+        '#type' => 'submit',
+    );
+    return $form;
+}
+
+// form functions
+
+function state_poll_form_submit($form, &$form_state) {
+    $form_state['redirect'] = 'state_poll_output';
+}
+
+function element_validate_state($element) {
+    global $us_states;
+    $input_state = $element['#value'];
+    if ( strlen($input_state) >=3 ) {
+
+        $input_state = strtolower($input_state);
+        $input_state = ucwords($input_state);
+        foreach($us_states as $initial => $state_name) {
+            if ($state_name === $input_state) {
+                $_SESSION['state'] = $state_name;
+            } else {
+                form_error($element, t('That is not a real state.'));
+            }
+        }
+
+    } else {
+        $input_state = strtoupper($input_state);
+        foreach($us_states as $initial => $state_name) {
+            if ($initial === $input_state) {
+                $_SESSION['state'] = $initial;
+            } else {
+                form_error($element, t('That is not a real state.'));
+            }
+        }
+    }
+}
+
+// callback functions
+
+function state_poll_result() {
+    return $_SESSION['state'];
+}
