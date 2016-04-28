@@ -1,0 +1,77 @@
+<?php
+
+function triangle_tracker_menu() {
+    $items['triangle_input'] = array(
+        'title' => 'Triangle Tracker',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('triangle_tracker_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['triangle_output'] = array(
+        'title' => 'Triangle Tracker Results',
+        'page callback' => 'triangle_tracker_result',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+//form related functions
+
+function triangle_tracker_form() {
+    $form['triangle'] = array(
+        '#title' => t('Enter 3 Sides'),
+        '#type' => 'fieldset',
+    );
+    $form['triangle']['side1'] = array(
+        '#type' => 'textfield',
+        '#title' => 'Side 1',
+        '#required' => TRUE,
+        '#element_validate' => array('element_validate_number', 'element_validate_number_range'),
+    );
+    $form['triangle']['side2'] = array(
+        '#type' => 'textfield',
+        '#title' => 'Side 2',
+        '#required' => TRUE,
+        '#element_validate' => array('element_validate_number', 'element_validate_number_range'),
+    );
+    $form['triangle']['side3'] = array(
+        '#type' => 'textfield',
+        '#title' => 'Side 3',
+        '#required' => TRUE,
+        '#element_validate' => array('element_validate_number', 'element_validate_number_range'),
+    );
+    $form['triangle']['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Determine Your Triangle',
+    );
+    return $form;
+}
+
+function triangle_tracker_form_submit($form, &$form_state) {
+    $form_state['redirect'] = 'triangle_output';
+}
+
+//callback functions
+
+function triangle_tracker_result() {
+    return "Hello, World!";
+}
+
+//validation functions
+
+// function triangle_tracker_form_validate($form, &$form_state) {
+//     $one = $form_state['values']['side1'];
+//     $two = $form_state['values']['side2'];
+//     $three = $form_state['values']['side3'];
+//     $one_two_greater_three = ( ($one + $two) > $three );
+//     $two_three_greater_one = ( ($two + $three) > $one );
+//     $three_one_greater_two = ( ($one + $two) > $three );
+// }
+
+function element_validate_number_range($element) {
+    if ($element['#value'] <= 0) {
+        form_error($element, t('Please enter a positive number'));
+    }
+}
