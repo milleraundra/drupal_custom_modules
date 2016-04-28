@@ -33,12 +33,11 @@ function player1_form() {
         '#type' => 'textfield',
         '#title' => 'Enter Rock, Paper, or Scissors',
         '#required' => TRUE,
-        '#element_validate' => array(),
+        '#element_validate' => array('element_validate_rps'),
     );
     $form['submit'] = array(
         '#type' => 'submit',
         '#value' => 'Throw!',
-        '#validate' => array(),
     );
     return $form;
 }
@@ -51,12 +50,11 @@ function player2_form() {
         '#type' => 'textfield',
         '#title' => 'Enter Rock, Paper, or Scissors',
         '#required' => TRUE,
-        '#element_validate' => array(),
+        '#element_validate' => array('element_validate_rps'),
     );
     $form['submit'] = array(
         '#type' => 'submit',
         '#value' => 'Throw!',
-        '#validate' => array(),
     );
     return $form;
 }
@@ -77,4 +75,10 @@ function rps_results() {
     var_dump($_SESSION['player1_throw']);
     var_dump($_SESSION['player2_throw']);
     return "Hello, World!";
+}
+
+function element_validate_rps($element) {
+    if ( $element['#value'] !== 'Rock' && $element['#value'] !== 'Paper' && $element['#value'] !== 'Scissors') {
+        form_error($element, t('Please enter "Rock", "Paper", or "Scissors". Case sensitive.'));
+    }
 }
