@@ -45,6 +45,7 @@ function triangle_tracker_form() {
     $form['triangle']['submit'] = array(
         '#type' => 'submit',
         '#value' => 'Determine Your Triangle',
+        '#validate' => array('triangle_tracker_form_validate'),
     );
     return $form;
 }
@@ -61,14 +62,17 @@ function triangle_tracker_result() {
 
 //validation functions
 
-// function triangle_tracker_form_validate($form, &$form_state) {
-//     $one = $form_state['values']['side1'];
-//     $two = $form_state['values']['side2'];
-//     $three = $form_state['values']['side3'];
-//     $one_two_greater_three = ( ($one + $two) > $three );
-//     $two_three_greater_one = ( ($two + $three) > $one );
-//     $three_one_greater_two = ( ($one + $two) > $three );
-// }
+function triangle_tracker_form_validate($form, &$form_state) {
+    $one = $form_state['values']['side1'];
+    $two = $form_state['values']['side2'];
+    $three = $form_state['values']['side3'];
+    $one_two_greater_three = ( ($one + $two) > $three );
+    $two_three_greater_one = ( ($two + $three) > $one );
+    $three_one_greater_two = ( ($three + $one) > $two );
+    if (!$one_two_greater_three || !$two_three_greater_one || !$three_one_greater_two) {
+        form_set_error('triangle', 'Those three lengths do not make a triangle.');
+    }
+}
 
 function element_validate_number_range($element) {
     if ($element['#value'] <= 0) {
